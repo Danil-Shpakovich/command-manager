@@ -8,4 +8,4 @@ class CommandExecutionError extends Error
     }
 }
 
-module.exports = { CommandExecutionError }
+module.exports = CommandExecutionError

@@ -9,4 +9,4 @@ class CommandExecutionData
     }
 }
 
-module.exports = { CommandExecutionData }
+module.exports = CommandExecutionData

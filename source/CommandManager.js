@@ -2,9 +2,9 @@ const util = require("util")
 const path = require("path")
 const fs = require("fs")
 
-const { Command } = require("./Command")
-const { CommandExecutionData } = require("./CommandExecutionData")
-const { CommandExecutionError } = require("./CommandExecutionError")
+const Command = require("./Command")
+const CommandExecutionData = require("./CommandExecutionData")
+const CommandExecutionError = require("./CommandExecutionError")
 
 class CommandManager
 {
@@ -25,6 +25,17 @@ class CommandManager
 
         this.prefixes.push(prefix)
         this.prefixes.sort((prefix1, prefix2) => prefix2.length - prefix1.length)
+    }
+
+    addPrefixes(prefixes)
+    {
+        if (!Array.isArray(prefixes))
+            return
+
+        prefixes.forEach(prefix => {
+            if (typeof prefix === "string" && prefix.length !== 0)
+                this.prefixes.push(prefix)
+        })
     }
 
     removePrefix(prefix)
@@ -144,7 +155,7 @@ class CommandManager
         await command.execute(executionData)
     }
 
-    async execute(message)
+    async execute(message, additions)
     {
         let prefix = this.prefixes.find(prefix => message.startsWith(prefix))
 
@@ -155,10 +166,26 @@ class CommandManager
         let args = cmd.split(/\s+/gm)
 
         let commandName = args.shift()
-        let executionData = new CommandExecutionData(prefix, cmd, args, this.additions)
+        let executionData = new CommandExecutionData(prefix, cmd, args, { ...this.additions, ...additions })
 
         await this.executeCommand(commandName, executionData)
     }
+
+    canExecute(message)
+    {
+        let prefix = this.prefixes.find(prefix => message.startsWith(prefix))
+
+        if (!prefix)
+            return false
+
+        let cmd = message.substring(prefix.length)
+        let args = cmd.split(/\s+/gm)
+        let commandName = args.shift()
+
+        let command = this.commands.find(command => command.checkName(commandName))
+
+        return !!command
+    }
 }
 
-module.exports = { CommandManager }
+module.exports = CommandManager

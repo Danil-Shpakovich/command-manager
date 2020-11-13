@@ -1,14 +1,17 @@
 const util = require("util")
 
-const { CommandExecutionData } = require("./CommandExecutionData")
+const CommandExecutionData = require("./CommandExecutionData")
 
 class Command
 {
+    customs = { }
+
     name = ""
+
     aliases = [ ]
     checks = [ ]
 
-    execution
+    execution = () => { }
 
     constructor(name, aliases, ...checks)
     {
@@ -29,6 +32,18 @@ class Command
             if (typeof check === "function")
                 this.checks.push(check)
         })
+    }
+
+    set(name, value)
+    {
+        if (name !== undefined)
+            this.customs[name] = value
+    }
+
+    get(name)
+    {
+        if (name !== undefined)
+            return this.customs[name]
     }
 
     setName(name)
@@ -112,4 +127,4 @@ class Command
     }
 }
 
-module.exports = { Command }
+module.exports = Command
