@@ -131,8 +131,10 @@ class CommandManager
                 this.additions[additionKey] = additions[additionKey]
     }
 
-    async executeCommand(commandName, executionData)
+    async executeCommand(executionData)
     {
+        let commandName = executionData.name
+
         if (typeof commandName !== "string" || !(executionData instanceof CommandExecutionData))
             return
 
@@ -166,9 +168,9 @@ class CommandManager
         let args = cmd.split(/\s+/gm)
 
         let commandName = args.shift()
-        let executionData = new CommandExecutionData(prefix, cmd, args, { ...this.additions, ...additions })
+        let executionData = new CommandExecutionData(prefix, commandName, cmd, args, { ...this.additions, ...additions })
 
-        await this.executeCommand(commandName, executionData)
+        await this.executeCommand(executionData)
     }
 
     canExecute(message)

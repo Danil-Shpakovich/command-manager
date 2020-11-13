@@ -13,6 +13,8 @@ class Command
 
     execution = () => { }
 
+    parent
+
     constructor(name, aliases, ...checks)
     {
         if (typeof name !== "string" || name.length === 0)
@@ -28,7 +30,7 @@ class Command
                 this.aliases.push(alias)
         })
 
-        aliases.forEach(check => {
+        checks.forEach(check => {
             if (typeof check === "function")
                 this.checks.push(check)
         })
@@ -40,10 +42,12 @@ class Command
             this.customs[name] = value
     }
 
-    get(name)
+    get(name, fallback)
     {
         if (name !== undefined)
-            return this.customs[name]
+            return this.customs[name] || fallback
+
+        return fallback
     }
 
     setName(name)
