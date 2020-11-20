@@ -1,6 +1,22 @@
-const Command = require("./Command")
-const CommandManager = require("./CommandManager")
-const CommandExecutionData = require("./CommandExecutionData")
-const CommandExecutionError = require("./CommandExecutionError")
+module.exports = {
+    Shell : require("./Shell"),
 
-module.exports = { Command, CommandManager, CommandExecutionData, CommandExecutionError }
+    // Data
+    CommandExecutionData : require("./data/CommandExecutionData"),
+
+    // Managers
+    AdditionManager : require("./managers/AdditionManager"),
+    AliasManager : require("./managers/AliasManager"),
+    CheckManager : require("./managers/CheckManager"),
+    CommandManager : require("./managers/CommandManager"),
+    CustomInfoManager : require("./managers/CustomInfoManager"),
+    PrefixManager : require("./managers/PrefixManager"),
+
+    // Structures
+    Addition : require("./structures/Addition"),
+    Alias : require("./structures/Alias"),
+    Check : require("./structures/Check"),
+    Command : require("./structures/Command"),
+    CustomInfo : require("./structures/CustomInfo"),
+    Prefix : require("./structures/Prefix"),
+}
